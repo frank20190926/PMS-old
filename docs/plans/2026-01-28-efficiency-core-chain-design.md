@@ -67,6 +67,15 @@
 - **未提交周报**: 标记未提交并计入统计。
 - **补交规则**: 默认不允许补交；PM 可配置放开并记录变更。
 
+### 2.6 补填/修改配置（日报+周报）
+- **层级**: 全局默认（关闭） + 项目级覆盖。
+- **默认**: 严格当天不可补填/修改，仅 PM 可开启。
+- **项目覆盖**: 允许补填与修改（不限时间），默认窗口 7 天（可配置）。
+- **审批**: 不需要。
+- **理由**: 不需要。
+- **生效范围**: 日报 + 周报。
+- **日志**: 记录配置变更（开关与窗口天数）。
+
 ---
 
 ## 3. 权限、通知与日志
@@ -106,6 +115,19 @@
 - 新建同步审计表（PENDING/PROCESSING/SUCCESS/FAILED）。
 - 自动重试 + 人工触发重试。
 - 幂等：`eff_daily_report_id + project_id` 唯一。
+
+### 同步审计表结构（eff_sync_audit）
+- `id` 主键自增
+- `eff_daily_report_id` 人效日报 ID
+- `project_id` 项目 ID
+- `pms_report_id` 老系统日报 ID（成功后回填）
+- `status` 状态：PENDING/PROCESSING/SUCCESS/FAILED
+- `attempts` 重试次数
+- `last_error` 最后一次错误信息
+- `next_retry_time` 下次重试时间
+- `create_time` 创建时间
+- `update_time` 更新时间
+
 
 ---
 
