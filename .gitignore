@@ -1,2 +1,17 @@
 
 .worktrees/
+.DS_Store
+.vscode/
+.idea/
+.claude/
+.playwright-mcp/
+.spec-workflow/
+node_modules/
+dist/
+target/
+*.log
+.env
+.env.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
