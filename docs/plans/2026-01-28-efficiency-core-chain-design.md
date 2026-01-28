@@ -235,3 +235,6 @@
 
 ## 9. 验证清单
 - 详见：`docs/plans/2026-01-28-efficiency-verification.md`
+
+## 9. 验证清单
+- 详见：`docs/plans/2026-01-28-efficiency-verification.md`
