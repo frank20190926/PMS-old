@@ -181,6 +181,54 @@ print(cursor.fetchall())
 
 ---
 
+## 🧩 项目详情壳（eff-project-shell）进展记录
+
+**时间**：2026-01-29
+
+### 前端（kml-pms-v2-vue/.worktrees/eff-project-shell）
+- 已完成：项目列表 → 项目详情壳 → 项目内菜单主流程
+- 统一项目维度：页面从 `route.params.projectId` 读取（带 query/sessionStorage 回退），并在查询/表单默认值中保持
+- 修复缺失页面：补齐 `project/task-generation/index.vue`，确保路由不报错
+- 权限菜单：项目内菜单按权限显示/隐藏
+
+**关键路由：**
+- `/efficiency/projects`
+- `/efficiency/project/:projectId`
+- `/efficiency/project/:projectId/tasks`
+- `/efficiency/project/:projectId/gantt`
+- `/efficiency/project/:projectId/lifecycle/phases`
+- `/efficiency/project/:projectId/lifecycle/documents`
+- `/efficiency/project/:projectId/lifecycle/task-gen`
+- `/efficiency/project/:projectId/lifecycle/flow`
+- `/efficiency/project/:projectId/reports`
+- `/efficiency/project/:projectId/reports/weekly`
+
+**提交记录：**
+- `feat: scaffold project shell routes`
+- `feat: add efficiency project list entry`
+- `feat: add project shell layout and menu`
+- `feat: scope efficiency pages by projectId`
+- `chore: adjust efficiency menus for project shell`
+
+### 后端（kml-pms-v2-server/.worktrees/eff-project-shell）
+- 项目列表数据范围：
+  - 管理员返回全部
+  - 非管理员走数据权限（部门/自定义/本人）
+
+**提交记录：**
+- `fix: align project list data scope`
+
+### 验证（E2E）
+使用账号：PM `huangfei` / 员工 `wangcong`
+- `tests/e2e/tests/project_init.spec.ts` ✅
+- `tests/e2e/tests/task_flow.spec.ts` ✅
+- `tests/e2e/tests/daily_report.spec.ts` ✅
+- `tests/e2e/tests/weekly_report.spec.ts` ✅
+
+**注意：** Playwright 需提升权限运行（Chromium 启动权限限制）。
+
+---
+
 ## 📋 开发规范
 
 ### 新增功能步骤
