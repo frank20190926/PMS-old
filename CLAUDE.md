@@ -271,6 +271,28 @@ print(cursor.fetchall())
 
 ---
 
+### 2026-01-29 - 项目阶段配置保存逻辑修复与全量E2E验证
+
+**问题：**
+- 项目阶段配置页面选择已存在阶段的项目后，保存逻辑仍走模板接口
+- `templateType = CUSTOM` 时调用模板创建接口会报“不支持的模板类型”
+- E2E `project_init` 流程因此失败
+
+**修复：**
+- 前端区分模板与自定义保存：
+  - `CUSTOM`：逐条 `addPhase` / `updatePhase`
+  - `STANDARD_5`：调用 `batchCreateFromTemplate`
+- 自动加载已有阶段时不再弹出阻塞确认框，避免 UI 阻塞
+
+**E2E 全量验证：**
+- ✅ `task_flow` 通过
+- ✅ `daily_report` 通过
+- ✅ `project_init` 通过
+- ⏭️ `weekly_report` 跳过（测试用例条件未满足）
+- ⏭️ `attachments` 跳过（占位测试）
+
+---
+
 ### 2026-01-27 (下午) - 项目全生命周期跟踪链路
 
 **操作：** 完整实现项目全生命周期跟踪链路系统，并完成数据库部署
