@@ -293,6 +293,21 @@ print(cursor.fetchall())
 
 ---
 
+### 2026-01-29 - 周报字段兼容修复与E2E验证
+
+**问题：**
+- `eff_weekly_report` 表中 `week_start` / `week_end` 为 NOT NULL
+- 周报创建接口只写 `week_start_date` / `week_end_date`，导致插入失败
+
+**修复：**
+- 允许 `week_start` / `week_end` 为空（不阻塞插入）
+- 脚本：`sql/eff_weekly_report_nullable_week_start.sql`
+
+**验证：**
+- ✅ `tests/e2e/tests/weekly_report.spec.ts` 通过
+
+---
+
 ### 2026-01-27 (下午) - 项目全生命周期跟踪链路
 
 **操作：** 完整实现项目全生命周期跟踪链路系统，并完成数据库部署
