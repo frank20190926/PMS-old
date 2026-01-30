@@ -255,6 +255,75 @@ print(cursor.fetchall())
 
 ## 📅 开发记录
 
+### 2026-01-30 - 项目详情壳页面（eff-project-shell）完成验证
+
+**操作：** 验证项目详情壳页面实现完成状态
+
+**功能背景：**
+- 实现"项目列表 → 项目详情壳 → 项目内菜单"主流程
+- 项目内页面统一基于 projectId 维度展示数据
+- 前后端各自在 `.worktrees/eff-project-shell` 分支中实现
+
+**实现内容：**
+
+| 任务 | 状态 | Git 提交 |
+|------|------|----------|
+| Task 1: 规划前端路由 | ✅ 完成 | `feat: add efficiency views and apis` |
+| Task 2: 项目列表页 | ✅ 完成 | `feat: add efficiency project list entry` |
+| Task 3: 项目详情壳 | ✅ 完成 | `feat: add project shell layout and menu` |
+| Task 4: 页面项目维度改造 | ✅ 完成 | `feat: scope efficiency pages by projectId` |
+| Task 5: 权限菜单配置 | ✅ 完成 | `chore: adjust efficiency menus for project shell` |
+| Task 6: 后端数据范围 | ✅ 完成 | `fix: align project list data scope` |
+| Task 7: E2E 验证 | ⏸️ 待服务启动 | - |
+| Task 8: 文档更新 | ✅ 完成 | 本次更新 |
+
+**前端实现（kml-pms-v2-vue/.worktrees/eff-project-shell）：**
+- ✅ 路由配置：`/efficiency/projects` 和 `/efficiency/project/:projectId`
+- ✅ 项目列表页：`src/views/pms/efficiency/project/project-list.vue`
+- ✅ 项目详情壳：`src/views/pms/efficiency/project/index.vue`（顶部信息条+左侧菜单+子路由容器）
+- ✅ 子路由页面：tasks/gantt/lifecycle/reports 等 8 个页面
+- ✅ projectId 传递：优先 `route.params`，回退 `query`/`sessionStorage`
+
+**后端实现（kml-pms-v2-server/.worktrees/eff-project-shell）：**
+- ✅ 项目列表接口：`/pms/efficiency/project/common/my-projects`
+- ✅ 数据范围逻辑：
+  - 管理员：`selectAllPmsProjectList()` 返回全部项目
+  - 非管理员：`selectPmsProjectList()` 按数据权限返回（部门/本人）
+
+**关键路由：**
+```
+/efficiency/projects                          # 项目列表
+/efficiency/project/:projectId                # 项目详情壳
+  ├── (空) → dashboard                       # 项目概览
+  ├── tasks                                  # 任务管理
+  ├── gantt                                  # 甘特图
+  ├── lifecycle/phases                       # 阶段配置
+  ├── lifecycle/documents                    # 文档管理
+  ├── lifecycle/task-gen                     # 任务生成
+  ├── lifecycle/flow                         # 流程仪表
+  ├── reports                                # 日报管理
+  └── reports/weekly                         # 周报管理
+```
+
+**验证状态：**
+- ✅ 前端路由配置完整
+- ✅ 后端数据范围逻辑正确
+- ✅ Git 提交记录清晰
+- ⏸️ E2E 测试待服务启动后执行
+
+**下一步操作：**
+1. 启动前后端服务（端口 1024/8090）
+2. 手动测试：项目列表 → 进入项目 → 各子页面切换
+3. 运行 E2E：`npx playwright test tests/project_init.spec.ts`
+4. 验证不同权限用户看到的项目列表范围
+
+**重要文件：**
+- 实现计划：`docs/plans/2026-01-29-eff-project-shell-implementation-plan.md`
+- 前端 worktree：`kml-pms-v2-vue/.worktrees/eff-project-shell`
+- 后端 worktree：`kml-pms-v2-server/.worktrees/eff-project-shell`
+
+---
+
 ### 2026-01-28 - 项目生命周期模块验证与修复
 
 **操作：** 验证项目生命周期模块编译和运行状态
