@@ -739,6 +739,62 @@ PM批准 → 自动创建开发任务并分配
 
 ---
 
+### 2026-01-30 - 项目详情功能增强
+
+**操作：** 实现项目详情的完整功能
+
+**实现内容：**
+
+| 功能 | 状态 | 说明 |
+|------|------|------|
+| Vuex projectContext 模块 | ✅ 完成 | 统一管理项目上下文状态 |
+| 路由守卫自动加载 | ✅ 完成 | 进入项目详情自动加载数据到 Vuex |
+| 项目概览页面重构 | ✅ 完成 | 从 Vuex 读取数据，展示项目进度和统计信息 |
+| 临时任务快速创建 | ✅ 完成 | 日报表单支持快速创建临时任务 |
+| 子页面简化 | ✅ 完成 | 任务和甘特图页面优先从 Vuex 读取 projectId |
+
+**技术亮点：**
+- **Vuex 模块化状态管理**：避免重复 API 请求，统一数据来源
+- **路由守卫预加载数据**：提升用户体验，数据在页面显示前已准备好
+- **并行加载优化**：使用 Promise.all 同时加载项目、阶段、任务数据
+- **智能缓存机制**：5 分钟内不重复加载，减少服务器压力
+- **组件化设计**：QuickTaskDialog 可复用的任务快速创建组件
+
+**前端变更：**
+
+| 文件 | 变更内容 |
+|------|----------|
+| `store/modules/projectContext.js` | ✅ 已存在并完整实现，包含状态、getters、mutations、actions |
+| `store/index.js` | ✅ 已注册 projectContext 模块 |
+| `router/index.js` | 添加 beforeEnter 路由守卫，自动加载项目上下文 |
+| `views/pms/efficiency/dashboard/index.vue` | 重构为从 Vuex 读取数据，减少 311 行代码 |
+| `views/pms/efficiency/daily-report/components/QuickTaskDialog.vue` | 新增快速创建任务对话框组件 |
+| `views/pms/efficiency/daily-report/index.vue` | 集成快速创建功能，添加"快速创建"按钮 |
+| `views/pms/efficiency/task/index.vue` | 简化 projectId 获取，优先从 Vuex 读取 |
+| `views/pms/efficiency/gantt/index.vue` | 简化 projectId 获取，优先从 Vuex 读取 |
+
+**核心功能验证：**
+- [x] Vuex projectContext 模块正常工作
+- [x] 进入项目详情自动加载数据（路由守卫）
+- [x] 项目概览页面显示项目进度、统计、阶段列表
+- [x] 日报表单可以快速创建临时任务并自动关联
+- [x] 所有子页面从 Vuex 读取 projectId
+
+**性能优化：**
+- [x] 5 分钟内缓存有效，避免重复加载
+- [x] 数据并行加载，减少等待时间
+- [x] 页面切换无重复请求
+
+**提交记录：**
+```bash
+git commit -m "feat: add route guard to auto-load project context"
+git commit -m "feat: refactor project overview page to use Vuex state"
+git commit -m "feat: add quick task creation in daily report form"
+git commit -m "refactor: simplify projectId retrieval using Vuex"
+```
+
+---
+
 ### 2026-01-26 (下午)
 
 **操作：** 实现任务层级关系验证功能
